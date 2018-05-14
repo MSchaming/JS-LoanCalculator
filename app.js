@@ -1,11 +1,21 @@
 // alert('Hi Michael, are you ready to begin?');
 
 //Listen for Submit on form
-document.getElementById('loan-form').addEventListener('submit', calculateResults);
+document.getElementById('loan-form').addEventListener('submit', function(e){
+    //Hide Results- want to hide everytime after they show and hit Calculate
+    document.getElementById('results').style.display = 'none';
+
+    //Show loader
+    document.getElementById('loader').style.display = 'block';
+    
+    setTimeout(calculateResults, 2000);
+
+    e.preventDefault();
+});
 
 //Calculate Results Function
 
-function calculateResults(e){
+function calculateResults(){
     console.log('Calculating...');
 //UI Variables
     const amount = document.getElementById('amount');
@@ -30,11 +40,17 @@ if(isFinite(monthly)) {
     monthlyPayment.value = monthly.toFixed(2);
     totalPayment.value = (monthly * calculatedPayments).toFixed(2);
     totalInterest.value = ((monthly * calculatedPayments) - principal).toFixed(2);
+    //show results
+    document.getElementById('results').style.display = 'block';
+    //hide loader gif
+    document.getElementById('loader').style.display = 'none';
+    
 } else {
     showError('Please Check your Numbers');  //call showError function
+
 }
  
-    e.preventDefault();
+
 } //end of Calcurlated Results function
 
 
@@ -42,24 +58,29 @@ if(isFinite(monthly)) {
 
 function showError(error){
 
+    //Hide Results- want to hide everytime after they show and hit Calculate
+    document.getElementById('results').style.display = 'none';
+     //hide loader gif
+    document.getElementById('loader').style.display = 'none';
+
     //create alert div
-const errorDiv = document.createElement('div');
+    const errorDiv = document.createElement('div');
     //get elements where we want to insert our alert div
-const cardDiv = document.querySelector('div.card');
-const heading = document.querySelector('h1.heading');
+    const cardDiv = document.querySelector('div.card');
+    const heading = document.querySelector('h1.heading');
 
 
 
     //add class Alert
-errorDiv.className = 'alert alert-danger';
+    errorDiv.className = 'alert alert-danger';
     //add Text, create textNode and append to div
-errorDiv.appendChild(document.createTextNode(error));
+    errorDiv.appendChild(document.createTextNode(error));
 
-//Insert error above "headhing"
-cardDiv.insertBefore(errorDiv, heading);
+    //Insert error above "headhing"
+    cardDiv.insertBefore(errorDiv, heading);
 
-//Clear error after 3 seconds, .setTimeout method of Window
-setTimeout(clearError, 3000);
+    //Clear error after 3 seconds, .setTimeout method of Window
+    setTimeout(clearError, 3000);
 
 }
 
